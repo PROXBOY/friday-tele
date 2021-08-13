@@ -38,6 +38,8 @@
 
 [![Deploy To Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/DevsExpo/FridayUserbot)
 
+[![Deploy To Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ramanveerji/FridayUserbot-Telethon)
+
 # Self-hosting (For Devs)
 
 ### If You Want Modules Like Image / Vid Tools To Work You Need To Install These:
