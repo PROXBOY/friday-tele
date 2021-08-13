@@ -55,7 +55,7 @@ $ mediainfo
 ## Simply clone the repository and run the main file:
 ```sh
 # Install Git First // (Else You Can Download And Upload to Your Local Server)
-$ git clone https://github.com/DevsExpo/FridayUserbot
+$ git clone https://github.com/ramanveerji/FridayUserbot-Telethon
 # Open Git Cloned File
 $ cd FridayUserbot
 # Config Virtual Env (Skip is already Done.)
