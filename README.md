@@ -2,7 +2,7 @@
 <h1 align="center"><b>FRIDAY-USERBOT 🇮🇳 </b></h1>
 <h4 align="center">A Powerful, Smart And Simple Userbot In Telethon. Powered By NoSpam+</h4>
 
-
+### This is a copy of Last Friday Telethon Version, Fork was not possible of this old repo thats why it is saved in a new repo.
 
 
 
