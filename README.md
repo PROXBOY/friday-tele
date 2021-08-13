@@ -38,7 +38,7 @@
 
 [![Deploy To Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ramanveerji/FridayUserbot-Telethon)
 
-APP is getting suspended on heroku, if anyone can fix it pls help in fixing it. Send a pull request for the fix.
+## APP is getting suspended on heroku, if anyone can fix it pls help in fixing it. Send a pull request for the fix.
 
 # Self-hosting (For Devs)
 
