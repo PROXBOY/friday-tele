@@ -32,26 +32,24 @@ async def progress(current, total, event, start, type_of_ps, file_name=None):
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "{0}{1} {2}%\n".format(
-            "".join(["▰" for i in range(math.floor(percentage / 10))]),
-            "".join(["▱" for i in range(10 - math.floor(percentage / 10))]),
+            "".join("▰" for i in range(math.floor(percentage / 10))),
+            "".join("▱" for i in range(10 - math.floor(percentage / 10))),
             round(percentage, 2),
         )
+
         tmp = progress_str + "{0} of {1}\nETA: {2}".format(
             humanbytes(current), humanbytes(total), time_formatter(estimated_total_time)
         )
-        if file_name:
-            try:
+        try:
+            if file_name:
                 await event.edit(
                     "{}\n**File Name:** `{}`\n{}".format(type_of_ps, file_name, tmp)
-                    
+
                 )
-            except:
-                pass
-        else:
-            try:
+            else:
                 await event.edit("{}\n{}".format(type_of_ps, tmp))
-            except:
-                pass
+        except:
+            pass
 
 
 def humanbytes(size):
@@ -169,15 +167,9 @@ async def uploadir(udir_event):
                     thumb_image = os.path.join(input_str, "thumb.jpg")
                     c_time = time.time()
                     metadata = extractMetadata(createParser(single_file))
-                    duration = 0
-                    width = 0
-                    height = 0
-                    if metadata.has("duration"):
-                        duration = metadata.get("duration").seconds
-                    if metadata.has("width"):
-                        width = metadata.get("width")
-                    if metadata.has("height"):
-                        height = metadata.get("height")
+                    duration = metadata.get("duration").seconds if metadata.has("duration") else 0
+                    width = metadata.get("width") if metadata.has("width") else 0
+                    height = metadata.get("height") if metadata.has("height") else 0
                     await udir_event.client.send_file(
                         udir_event.chat_id,
                         single_file,
@@ -202,7 +194,7 @@ async def uploadir(udir_event):
                         ),
                     )
                 os.remove(single_file)
-                uploaded = uploaded + 1
+                uploaded += 1
         await udir_event.edit("Uploaded {} files successfully !!".format(uploaded))
     else:
         await udir_event.edit("404: Directory Not Found")
@@ -296,12 +288,12 @@ async def uploadas(uas_event):
     supports_streaming = False
     round_message = False
     spam_big_messages = False
-    if type_of_upload == "stream":
-        supports_streaming = True
-    if type_of_upload == "vn":
-        round_message = True
     if type_of_upload == "all":
         spam_big_messages = True
+    elif type_of_upload == "stream":
+        supports_streaming = True
+    elif type_of_upload == "vn":
+        round_message = True
     input_str = uas_event.pattern_match.group(2)
     thumb = None
     file_name = None
@@ -315,15 +307,9 @@ async def uploadas(uas_event):
         thumb = get_video_thumb(file_name, output=thumb_path)
     if os.path.exists(file_name):
         metadata = extractMetadata(createParser(file_name))
-        duration = 0
-        width = 0
-        height = 0
-        if metadata.has("duration"):
-            duration = metadata.get("duration").seconds
-        if metadata.has("width"):
-            width = metadata.get("width")
-        if metadata.has("height"):
-            height = metadata.get("height")
+        duration = metadata.get("duration").seconds if metadata.has("duration") else 0
+        width = metadata.get("width") if metadata.has("width") else 0
+        height = metadata.get("height") if metadata.has("height") else 0
         try:
             if supports_streaming:
                 c_time = time.time()
@@ -397,7 +383,7 @@ async def lul(event):
     display_message = ""
     c_time = time.time()
     while not downloader.isFinished():
-        total_length = downloader.filesize if downloader.filesize else None
+        total_length = downloader.filesize or None
         downloaded = downloader.get_dl_size()
         now = time.time()
         diff = now - c_time
@@ -405,12 +391,14 @@ async def lul(event):
         speed = downloader.get_speed()
         elapsed_time = round(diff) * 1000
         progress_str = "[{0}{1}]\nProgress: {2}%".format(
-                ''.join(["▰" for i in range(math.floor(percentage / 5))]),
-                ''.join(["▱" for i in range(20 - math.floor(percentage / 5))]),
-        round(percentage, 2))
+            ''.join("▰" for i in range(math.floor(percentage / 5))),
+            ''.join("▱" for i in range(20 - math.floor(percentage / 5))),
+            round(percentage, 2),
+        )
+
         estimated_total_time = downloader.get_eta(human=True)
         try:
-            current_message = f"trying to download\n"
+            current_message = 'trying to download\n'
             current_message += f"URL: {url}\n"
             current_message += f"File Name: {file_name}\n"
             current_message += f"{progress_str}\n"

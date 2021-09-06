@@ -50,10 +50,7 @@ def get_readable_time(seconds: int) -> str:
 
     while count < 4:
         count += 1
-        if count < 3:
-            remainder, result = divmod(seconds, 60)
-        else:
-            remainder, result = divmod(seconds, 24)
+        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
         if seconds == 0 and remainder == 0:
             break
         time_list.append(int(result))
@@ -123,9 +120,7 @@ async def _(event):
                 f"Help string for {args} not found! Type `.help` to see valid module names."
             )
     else:
-        string = ""
-        for i in CMD_HELP.values():
-            string += f"`{str(i[0])}`, "
+        string = "".join(f'`{i[0]}`, ' for i in CMD_HELP.values())
         string = string[:-2]
         await event.edit(
             "Please specify which module you want help for!\n\n" f"{string}"
@@ -139,10 +134,7 @@ async def _(event):
     if event.fwd_from:
         return
     hmm = await bot.get_me()
-    if not hmm.username:
-        rip = hmm.id
-    else:
-        rip = f"@{hmm.username}"
+    rip = hmm.id if not hmm.username else f"@{hmm.username}"
     bothmm = await tgbot.get_me()
     uptime = get_readable_time((time.time() - Lastupdate))
     end = datetime.now()
@@ -223,9 +215,8 @@ async def print_changelogs(event, ac_br, changelog):
     changelog_str = f"**Updates available in {ac_br} branch!**\n\n{changelog}"
     if len(changelog_str) > 4096:
         await event.edit("**Changelog is too big, sending as a file.**")
-        file = open("output.txt", "w+")
-        file.write(changelog_str)
-        file.close()
+        with open("output.txt", "w+") as file:
+            file.write(changelog_str)
         await event.client.send_file(event.chat_id, "output.txt")
         remove("output.txt")
     else:
@@ -381,7 +372,7 @@ async def upstream(event):
         )
         return repo.__del__()
 
-    if conf == "" and force_update is False:
+    if conf == "" and not force_update:
         await print_changelogs(event, ac_br, changelog)
         await event.delete()
         return await event.respond(

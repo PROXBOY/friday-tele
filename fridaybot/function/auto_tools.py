@@ -25,7 +25,7 @@ rgb_temp = [(255, 255, 255), (0, 0, 0), (0, 0, 255), (255, 191, 0), (255, 127, 8
 async def auto_name(name=None):
     TZ = pytz.timezone(Config.TZ)
     datetime_tz = datetime.now(TZ)
-    nameof = name if name else bot.me.first_name
+    nameof = name or bot.me.first_name
     oof = datetime_tz.strftime(f"🕒 %d/%m/%Y ⚡{nameof}⚡ 📅 %H:%M")
     try:
         await bot(
@@ -40,7 +40,7 @@ async def auto_name(name=None):
 async def auto_bio(bio=None):
     TZ = pytz.timezone(Config.TZ)
     datetime_tz = datetime.now(TZ)
-    bioof = bio if bio else random.choice(bio_temp)
+    bioof = bio or random.choice(bio_temp)
     oof = datetime_tz.strftime(f'🕒%d/%m/%Y "{bioof}" 📅%H:%M')
     try:
         await bot(
@@ -68,8 +68,6 @@ async def auto_pic():
         photo = "fridaybot/photo_pfp.png"
         while not downloader.isFinished():
             pass
-    else:
-        pass
     img = Image.open(downloaded_file_name)
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype('Fonts/Streamster.ttf', 90)

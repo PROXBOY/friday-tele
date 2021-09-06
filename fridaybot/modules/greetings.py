@@ -99,7 +99,7 @@ async def _(event):
     if event.fwd_from:
         return
     animation_interval = 2
-    animation_ttl = range(0, 11)
+    animation_ttl = range(11)
 
     await event.edit("Thanks for contacting me..\n I'm Going to leave now...")
     animation_chars = [

@@ -61,7 +61,7 @@ async def gbun(event):
         return
     if not reason or reason is None:
         hmm_r = "#GBanned"
-    elif reason:
+    else:
         hmm_r = reason
     if user.id in o:
         await event.edit("**I Can't Gban You Master / Sudo Users :(**")
@@ -148,12 +148,11 @@ async def mi(event):
     hmm = await bot.get_me()
     if event.is_private:
         return
-    if await is_admin(event, hmm.id):
-        if gban_sql.is_gbanned(sed):
-            try:
-                await event.client.edit_permissions(event.chat_id, sed, view_messages=False)
-            except:
-                pass
+    if await is_admin(event, hmm.id) and gban_sql.is_gbanned(sed):
+        try:
+            await event.client.edit_permissions(event.chat_id, sed, view_messages=False)
+        except:
+            pass
             
 async def get_user_from_event(event):
     args = event.pattern_match.group(1).split(" ", 1)
@@ -202,18 +201,12 @@ async def startgmute(event):
     if event.fwd_from:
         return
     private = False
-    if event.fwd_from:
-        return
-    elif event.is_private:
-        await event.edit("Unexpected issues or ugly errors may occur!")
-        await asyncio.sleep(3)
-        private = True
     reply = await event.get_reply_message()
     if event.pattern_match.group(1) is not None:
         userid = event.pattern_match.group(1)
     elif reply is not None:
         userid = reply.sender_id
-    elif private is True:
+    elif private:
         userid = event.chat_id
     else:
         return await event.edit(
@@ -236,18 +229,12 @@ async def endgmute(event):
     if event.fwd_from:
         return
     private = False
-    if event.fwd_from:
-        return
-    elif event.is_private:
-        await event.edit("Unexpected issues or ugly errors may occur!")
-        await asyncio.sleep(3)
-        private = True
     reply = await event.get_reply_message()
     if event.pattern_match.group(1) is not None:
         userid = event.pattern_match.group(1)
     elif reply is not None:
         userid = reply.sender_id
-    elif private is True:
+    elif private:
         userid = event.chat_id
     else:
         return await event.edit(

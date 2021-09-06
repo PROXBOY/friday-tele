@@ -117,42 +117,40 @@ def order_points(pts):
 	return rect
 
 def four_point_transform(image, pts):
-	# obtain a consistent order of the points and unpack them
-	# individually
-	rect = order_points(pts)
-	(tl, tr, br, bl) = rect
- 
-	# compute the width of the new image, which will be the
-	# maximum distance between bottom-right and bottom-left
-	# x-coordiates or the top-right and top-left x-coordinates
-	widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
-	widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
-	maxWidth = max(int(widthA), int(widthB))
- 
-	# compute the height of the new image, which will be the
-	# maximum distance between the top-right and bottom-right
-	# y-coordinates or the top-left and bottom-left y-coordinates
-	heightA = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
-	heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
-	maxHeight = max(int(heightA), int(heightB))
- 
-	# now that we have the dimensions of the new image, construct
-	# the set of destination points to obtain a "birds eye view",
-	# (i.e. top-down view) of the image, again specifying points
-	# in the top-left, top-right, bottom-right, and bottom-left
-	# order
-	dst = np.array([
-		[0, 0],
-		[maxWidth - 1, 0],
-		[maxWidth - 1, maxHeight - 1],
-		[0, maxHeight - 1]], dtype = "float32")
- 
-	# compute the perspective transform matrix and then apply it
-	M = cv2.getPerspectiveTransform(rect, dst)
-	warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight))
- 
-	# return the warped image
-	return warped
+    # obtain a consistent order of the points and unpack them
+    # individually
+    rect = order_points(pts)
+    (tl, tr, br, bl) = rect
+
+    # compute the width of the new image, which will be the
+    # maximum distance between bottom-right and bottom-left
+    # x-coordiates or the top-right and top-left x-coordinates
+    widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
+    widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
+    maxWidth = max(int(widthA), int(widthB))
+
+    # compute the height of the new image, which will be the
+    # maximum distance between the top-right and bottom-right
+    # y-coordinates or the top-left and bottom-left y-coordinates
+    heightA = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
+    heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
+    maxHeight = max(int(heightA), int(heightB))
+
+    # now that we have the dimensions of the new image, construct
+    # the set of destination points to obtain a "birds eye view",
+    # (i.e. top-down view) of the image, again specifying points
+    # in the top-left, top-right, bottom-right, and bottom-left
+    # order
+    dst = np.array([
+    	[0, 0],
+    	[maxWidth - 1, 0],
+    	[maxWidth - 1, maxHeight - 1],
+    	[0, maxHeight - 1]], dtype = "float32")
+
+    # compute the perspective transform matrix and then apply it
+    M = cv2.getPerspectiveTransform(rect, dst)
+    	# return the warped image
+    return cv2.warpPerspective(image, M, (maxWidth, maxHeight))
     
 def get_readable_file_size(size_in_bytes: Union[int, float]) -> str:
     if size_in_bytes is None:
@@ -215,31 +213,26 @@ async def progress(current, total, event, start, type_of_ps, file_name=None):
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "{0}{1} {2}%\n".format(
-            "".join(["▰" for i in range(math.floor(percentage / 10))]),
-            "".join(["▱" for i in range(10 - math.floor(percentage / 10))]),
+            "".join("▰" for i in range(math.floor(percentage / 10))),
+            "".join("▱" for i in range(10 - math.floor(percentage / 10))),
             round(percentage, 2),
         )
+
         tmp = progress_str + "{0} of {1}\nETA: {2}".format(
             humanbytes(current), humanbytes(total), time_formatter(estimated_total_time)
         )
-        if file_name:
-            try:
+        try:
+            if file_name:
                 await event.edit(
                     "{}\n**File Name:** `{}`\n{}".format(type_of_ps, file_name, tmp)
-                    
+
                 )
-            except:
-                pass
-        else:
-            try:
+            else:
                 await event.edit("{}\n{}".format(type_of_ps, tmp))
-            except:
-                pass
+        except:
+            pass
 async def all_pro_s(Config, client2, client3, bot):
-    if not Config.SUDO_USERS:
-        lmao_s = []
-    else:
-        lmao_s = list(Config.SUDO_USERS)
+    lmao_s = [] if not Config.SUDO_USERS else list(Config.SUDO_USERS)
     sed1 = await bot.get_me()
     lmao_s.append(sed1.id)
     if client2:
@@ -301,12 +294,11 @@ async def get_all_modules(event, borg, channel_id):
                                 )
                 os.remove(downloaded_file_name)
         except:
-                await event.edit("**Failed To Install :** `{}`".format(os.path.basename(downloaded_file_name)
-                                                              )
-                                )
-                os.remove(downloaded_file_name)
-                nom += 1
-                pass
+            await event.edit("**Failed To Install :** `{}`".format(os.path.basename(downloaded_file_name)
+                                                          )
+                            )
+            os.remove(downloaded_file_name)
+            nom += 1
     yesm = len_p - nom
     return yesm, nom, len_p
 
@@ -412,7 +404,7 @@ async def crop_vid(input_vid: str, final_path: str):
             height = track.height
             width = track.width
     if aspect_ratio != 1:
-        crop_by = width if (height > width) else height
+        crop_by = min(height, width)
         os.system(f'ffmpeg -i {input_vid} -vf "crop={crop_by}:{crop_by}" {final_path}')
         os.remove(input_vid)
     else:
@@ -519,7 +511,7 @@ async def get_imdb_id(search, event):
 
 async def get_subtitles(imdb_id, borg, event):
     await event.edit("`Processing..`")
-    link = f"https://yts-subs.com/movie-imdb/" + imdb_id
+    link = 'https://yts-subs.com/movie-imdb/' + imdb_id
     movie_response = requests.get(url=link)
     subtitles = []
     soup1 = BeautifulSoup(movie_response.content, "html.parser")
@@ -637,7 +629,7 @@ async def _ytdl(url, is_it, event, tgbot):
         with YoutubeDL(opts) as ytdl:
             ytdl_data = ytdl.extract_info(url)
     except Exception as e:
-        await event.edit(f"**Failed To Download** \n**Error :** `{str(e)}`")
+        await event.edit(f'**Failed To Download** \n**Error :** `{e}`')
         return
     c_time = time.time()
     if song:
@@ -737,10 +729,7 @@ async def get_all_admin_chats(event):
 async def is_admin(event, user):
     try:
         sed = await event.client.get_permissions(event.chat_id, user)
-        if sed.is_admin:
-            is_mod = True
-        else:
-            is_mod = False
+        is_mod = bool(sed.is_admin)
     except:
         is_mod = False
     return is_mod
@@ -791,14 +780,14 @@ async def is_nsfw(event):
             starkstark = await event.client.download_media(lmao.media, thumb=-1)
         except:
             return False
-    elif lmao.photo or lmao.sticker:
+    elif lmao.photo:
         try:
             starkstark = await event.client.download_media(lmao.media)
         except:
             return False
     img = starkstark
     f = {"file": (img, open(img, "rb"))}
-    
+
     r = requests.post("https://starkapi.herokuapp.com/nsfw/", files = f).json()
     if r.get("success") is False:
       is_nsfw = False
@@ -852,6 +841,5 @@ class Track_Mobile_Number:
         soup = BeautifulSoup(html.text, "html.parser")
         if soup.find("title").text.strip() != "404 NOT FOUND":
             mobile_tracker_valve = [i.text.strip() for i in soup.find_all("td")]
-            mobile_tracker = dict(zip(mobile_tracker_key, mobile_tracker_valve))
-            return mobile_tracker
+            return dict(zip(mobile_tracker_key, mobile_tracker_valve))
         raise Exception("Mobile Number Not Found")

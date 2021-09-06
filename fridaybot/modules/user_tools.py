@@ -103,10 +103,10 @@ async def _(event):
     afk_time = None
     last_afk_message = {}
     afk_end = {}
-    start_1 = datetime.now()
-    afk_start = start_1.replace(microsecond=0)
-    reason = event.pattern_match.group(1)
     if not USER_AFK:
+        start_1 = datetime.now()
+        afk_start = start_1.replace(microsecond=0)
+        reason = event.pattern_match.group(1)
         last_seen_status = await event.client(
             functions.account.GetPrivacyRequest(types.InputPrivacyKeyStatusTimestamp())
         )
@@ -119,7 +119,7 @@ async def _(event):
                 f"**My Master Seems To Be Too Busy 👀.** \n__He Going Afk Because Of__ `{reason}`",
             )
         else:
-            await borg.send_message(event.chat_id, f"**I Am Busy And I Am Going Afk**.")
+            await borg.send_message(event.chat_id, '**I Am Busy And I Am Going Afk**.')
         await asyncio.sleep(5)
         await event.delete()
         try:
@@ -177,9 +177,9 @@ async def set_not_afk(event):
 async def on_afk(event):
     if event.fwd_from:
         return
-    global USER_AFK  
-    global afk_time  
-    global last_afk_message  
+    global USER_AFK
+    global afk_time
+    global last_afk_message
     global afk_start
     global afk_end
     back_alivee = datetime.now()
@@ -193,10 +193,10 @@ async def on_afk(event):
     if USER_AFK and not (await event.get_sender()).bot:  
         if afk_time:  
             now = datetime.datetime.now()
-            datime_since_afk = now - afk_time  
+            datime_since_afk = now - afk_time
             time = float(datime_since_afk.seconds)
             days = time // (24 * 3600)
-            time = time % (24 * 3600)
+            time %= 24 * 3600
             hours = time // 3600
             time %= 3600
             minutes = time // 60
@@ -226,7 +226,7 @@ async def on_afk(event):
         # Spechide Bad
         await msg.delete()
         if event.chat_id in last_afk_message:  
-            await last_afk_message[event.chat_id].delete()  
+            await last_afk_message[event.chat_id].delete()
         last_afk_message[event.chat_id] = msg  
 
 
@@ -250,8 +250,6 @@ async def _(event):
     if event.fwd_from:
         return
     input_chnnl = event.pattern_match.group(1)
-    sed = 0
-    oks = 0
     if input_chnnl == "all":
         poppo = await friday.edit_or_reply(event, "`Adding All Channel TO DB.`")
         addall = [
@@ -259,15 +257,16 @@ async def _(event):
             for d in await event.client.get_dialogs()
             if (d.is_group or d.is_channel)
         ]
+        sed = 0
+        oks = 0
         for i in addall:
             try:
-                if i.broadcast:
-                    if i.creator or i.admin_rights:
-                        if already_added(i.id):
-                            oks += 1
-                        else:
-                            add_chnnl_in_db(i.id)
-                            sed += 1
+                if i.broadcast and (i.creator or i.admin_rights):
+                    if already_added(i.id):
+                        oks += 1
+                    else:
+                        add_chnnl_in_db(i.id)
+                        sed += 1
             except BaseException:
                 pass
         await poppo.edit(f"Process Completed. Added {sed} Channel To List. Failed {oks} Due to already Added !")
@@ -468,7 +467,7 @@ def get_restriction_string(a) -> str:
     b = ""
     c = ""
     if isinstance(a, Channel):
-        c = f"[{a.title}](https://t.me/c/{a.id}/{2})"
+        c = f'[{a.title}](https://t.me/c/{a.id}/2)'
     elif isinstance(a, User):
         c = f"[{a.first_name}](tg://user?id={a.id})"
     elif isinstance(a, Chat):
@@ -553,12 +552,11 @@ async def get_full_user(event):
                     or previous_message.forward.channel_id
                 )
             )
-            return replied_user, None
         else:
             replied_user = await event.client(
                 GetFullUserRequest(previous_message.sender_id)
             )
-            return replied_user, None
+        return replied_user, None
     else:
         input_str = None
         try:

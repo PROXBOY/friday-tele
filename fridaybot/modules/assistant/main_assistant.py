@@ -45,7 +45,6 @@ async def start(event):
     devlop = await bot.get_me()
     hmmwow = devlop.first_name
     vent = event.chat_id
-    mypic = Config.ASSISTANT_START_PIC
     starttext = f"Hello, {firstname} ! Nice To Meet You, Well I Am {bot_id}, An Powerfull Assistant Bot. \n\nMy Master [{hmmwow}](tg://user?id={bot.uid}) \nYou Can Talk/Contact My Master Using This Bot. \n\nIf You Want Your Own Assistant You Can Deploy From Button Below. \n\nPowered By [Friday Userbot](t.me/FridayOT)"
     if event.sender_id == bot.uid:
         await tgbot.send_message(
@@ -66,6 +65,7 @@ async def start(event):
             pass
         elif not already_added(event.sender_id):
             add_usersid_in_db(event.sender_id)
+        mypic = Config.ASSISTANT_START_PIC
         await tgbot.send_file(
             event.chat_id,
             file=mypic,
@@ -114,8 +114,6 @@ async def users(event):
                 caption="Total Users In Your Bot.",
                 allow_cache=False,
             )
-    else:
-        pass
 
 
 @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"gibcmd")))
@@ -142,8 +140,13 @@ async def all_messages_catcher(event):
                 )
             )
         except telethon.errors.rpcerrorlist.UserNotParticipantError:
-            await event.reply(f"**Opps, I Couldn't Forward That Message To Owner. Please Join My Channel First And Then Try Again!**",
-                             buttons = [Button.url("Join Channel 🇮🇳", Config.JTM_CHANNEL_USERNAME)])
+            await event.reply(
+                "**Opps, I Couldn't Forward That Message To Owner. Please Join My Channel First And Then Try Again!**",
+                buttons=[
+                    Button.url("Join Channel 🇮🇳", Config.JTM_CHANNEL_USERNAME)
+                ],
+            )
+
             return
     await event.get_sender()
     sed = await event.forward_to(bot.uid)
@@ -187,10 +190,7 @@ async def sedlyfsir(event):
     error_count = 0
     sent_count = 0
     hmmok = ""
-    if msgtobroadcast == None:
-        await event.reply("`Wait. What? Broadcast None?`")
-        return
-    elif msgtobroadcast == " ":
+    if msgtobroadcast is None or msgtobroadcast == " ":
         await event.reply("`Wait. What? Broadcast None?`")
         return
     for starkcast in userstobc:

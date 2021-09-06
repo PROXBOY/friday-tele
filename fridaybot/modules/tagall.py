@@ -12,7 +12,7 @@ async def _(event):
         return
     chat = await event.get_input_chat()
     mentions = ""
-    sh = event.pattern_match.group(1) if event.pattern_match.group(1) else "Hi !"
+    sh = event.pattern_match.group(1) or "Hi !"
     async for x in event.client.iter_participants(chat):
         mentions += f"[{x.first_name}](tg://user?id={x.id}) \n"
     await event.delete()

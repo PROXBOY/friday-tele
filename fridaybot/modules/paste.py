@@ -45,16 +45,12 @@ async def _(event):
             m_list = None
             with open(downloaded_file_name, "rb") as fd:
                 m_list = fd.readlines()
-            message = ""
-            for m in m_list:
-                # message += m.decode("UTF-8") + "\r\n"
-                message += m.decode("UTF-8")
+            message = "".join(m.decode("UTF-8") for m in m_list)
             os.remove(downloaded_file_name)
         else:
             message = previous_message.message
     else:
         await event.edit("Give Some Text Or File To Paste")
-    py_file = ""
     name = "ok"
     if previous_message.media:
         name = await borg.download_media(
@@ -62,6 +58,7 @@ async def _(event):
         )
     downloaded_file_name = name
     if downloaded_file_name.endswith(".py"):
+        py_file = ""
         py_file += ".py"
         data = message
         key = (
@@ -72,8 +69,6 @@ async def _(event):
         )
         url = f"https://nekobin.com/{key}{py_file}"
         raw = f"https://nekobin.com/raw/{key}{py_file}"
-        reply_text = f"Pasted Text [neko]({url})\n Raw ? [View Raw]({raw})"
-        await event.edit(reply_text)
     else:
         data = message
         key = (
@@ -84,8 +79,9 @@ async def _(event):
         )
         url = f"https://nekobin.com/{key}"
         raw = f"https://nekobin.com/raw/{key}"
-        reply_text = f"Pasted Text [neko]({url})\n Raw ? [View Raw]({raw})"
-        await event.edit(reply_text)
+
+    reply_text = f"Pasted Text [neko]({url})\n Raw ? [View Raw]({raw})"
+    await event.edit(reply_text)
 
 
 CMD_HELP.update(

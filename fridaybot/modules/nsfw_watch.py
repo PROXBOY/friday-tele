@@ -59,7 +59,7 @@ async def disable_nsfw(event):
     rmnsfwatch(str(event.chat_id))
     await event.edit(f"**Removed Chat {event.chat.title} With Id {event.chat_id} From Nsfw Watch**")
     
-@bot.on(events.NewMessage())        
+@bot.on(events.NewMessage())
 async def ws(event):
     warner_starkz = get_all_nsfw_enabled_chat()
     if len(warner_starkz) == 0:
@@ -82,15 +82,9 @@ async def ws(event):
             pass
         lolchat = await event.get_chat()
         ctitle = event.chat.title
-        if lolchat.username:
-            hehe = lolchat.username
-        else:
-            hehe = event.chat_id
+        hehe = lolchat.username or event.chat_id
         wstark = await event.client.get_entity(his_id)
-        if wstark.username:
-            ujwal = wstark.username
-        else:
-            ujwal = wstark.id
+        ujwal = wstark.username or wstark.id
         try:
             await borg.send_message(Config.PRIVATE_GROUP_ID, f"**#NSFW_WATCH** \n**Chat :** `{hehe}` \n**Nsfw Sender - User / Bot :** `{ujwal}` \n**Chat Title:** `{ctitle}`")  
             return

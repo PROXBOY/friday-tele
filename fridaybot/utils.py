@@ -22,7 +22,7 @@ from fridaybot.Configs import Config
 sedprint = logging.getLogger("UTILS")
 cmdhandler = Config.COMMAND_HAND_LER
 bothandler = Config.BOT_HANDLER
-sudo_users = list(Config.SUDO_USERS) if list(Config.SUDO_USERS) else ''
+sudo_users = list(Config.SUDO_USERS) or ''
 from datetime import datetime
 
 def friday_on_command(**args):
@@ -544,10 +544,11 @@ async def progress(current, total, event, start, type_of_ps, file_name=None):
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "[{0}{1}]\nProgress: {2}%\n".format(
-            "".join(["█" for i in range(math.floor(percentage / 5))]),
-            "".join(["░" for i in range(20 - math.floor(percentage / 5))]),
+            "".join("█" for i in range(math.floor(percentage / 5))),
+            "".join("░" for i in range(20 - math.floor(percentage / 5))),
             round(percentage, 2),
         )
+
         tmp = progress_str + "{0} of {1}\nETA: {2}".format(
             humanbytes(current), humanbytes(total), time_formatter(estimated_total_time)
         )
@@ -631,7 +632,7 @@ def sudo_cmd(pattern=None, **args):
     # add blacklist chats, UB should not respond in these chats
     args["blacklist_chats"] = True
     black_list_chats = list(Config.UB_BLACK_LIST_CHAT)
-    if len(black_list_chats) > 0:
+    if black_list_chats:
         args["chats"] = black_list_chats
     # add blacklist chats, UB should not respond in these chats
     if "allow_edited_updates" in args and args["allow_edited_updates"]:
@@ -642,7 +643,7 @@ def sudo_cmd(pattern=None, **args):
 
 
 async def edit_or_reply(event, text, parse_mode=None):
-    parse_mode_z = parse_mode if parse_mode else "md"
+    parse_mode_z = parse_mode or "md"
     if event.sender_id in Config.SUDO_USERS:
         reply_to = await event.get_reply_message()
         if reply_to:
@@ -695,10 +696,6 @@ def is_admin():
             kek = bot.uid
             if sed.is_admin:
                 await func(event)
-            if event.sender_id == kek:
-                pass
-            elif not user:
-                pass
             if not sed.is_admin:
                 await event.reply("Only Admins Can Use it.")
 
@@ -747,8 +744,6 @@ def god_only():
             moms = bot.uid
             if event.sender_id == moms:
                 await func(event)
-            else:
-                pass
 
         return wrapper
 
@@ -775,8 +770,6 @@ def only_group():
         async def wrapper(event):
             if event.is_group:
                 await func(event)
-            else:
-                pass
 
         return wrapper
 
@@ -791,8 +784,6 @@ def peru_only():
             kek.append(bot.uid)
             if event.sender_id in kek:
                 await func(event)
-            else:
-                pass
 
         return wrapper
 
@@ -803,9 +794,7 @@ def only_pvt():
     def decorator(func):
         @functools.wraps(func)
         async def wrapper(event):
-            if event.is_group:
-                pass
-            else:
+            if not event.is_group:
                 await func(event)
 
         return wrapper

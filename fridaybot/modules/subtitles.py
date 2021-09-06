@@ -28,8 +28,7 @@ if not os.path.isdir(sedpath):
     os.makedirs(sedpath)
 
 def search_sub(query):
-    BASE_URL = "https://isubtitles.org"
-    r = requests.get(f"{BASE_URL}/search?kwd={query}").text
+    r = requests.get(f'https://isubtitles.org/search?kwd={query}').text
     soup = bs(r, "lxml")
     list_search = soup.find_all("div", class_="row")
     index = []
@@ -42,12 +41,9 @@ def search_sub(query):
     third_soup = bs(str(headings), "lxml")
     search_links = third_soup.find_all("a")
 
-    i = 0
-
-    for a in search_links:
-        i += 1
+    for i, a in enumerate(search_links, start=1):
         index.append(i)
-        title.append(a.text)        
+        title.append(a.text)
         key = a.get("href").split("/")
         keywords.append(key[1])
 

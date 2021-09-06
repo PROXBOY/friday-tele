@@ -44,11 +44,7 @@ LOG_CHAT = Config.PRIVATE_GROUP_ID
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "Friday"
 
 HELP_EMOJI = os.environ.get("HELP_EMOJI", None)
-if not HELP_EMOJI:
-    emji = "✘"
-else:
-    emji = HELP_EMOJI
-    
+emji = "✘" if not HELP_EMOJI else HELP_EMOJI
 db_m = TinyDB('secret.json')
 db_s = TinyDB('not4u.json')
 
@@ -63,15 +59,17 @@ async def inline_handler(event):
         if event.query.user_id not in o:
             resultm = builder.article(
                 title="403: Forbidden",
-                text=f"You Are Forbidden To Use This Bot, You Can Deploy You Own From [Here](https://github.com/DevsExpo/FridayUserbot)",
+                text='You Are Forbidden To Use This Bot, You Can Deploy You Own From [Here](https://github.com/DevsExpo/FridayUserbot)',
             )
+
             await event.answer([resultm])
             return
         results = builder.article(
-                title="Hello Boss, This is Your Assistant!",
-                text=f"Wonder What All You Can Do With Me? Click Below To Know More.",
-                buttons=custom.Button.inline("Explore!", data="explore")
-            )
+            title="Hello Boss, This is Your Assistant!",
+            text='Wonder What All You Can Do With Me? Click Below To Know More.',
+            buttons=custom.Button.inline("Explore!", data="explore"),
+        )
+
         await event.answer([results])
         return
     if event.query.user_id in o and query.startswith("Friday"):
@@ -267,7 +265,7 @@ async def on_plug_in_callback_query_handler(event):
 )
 async def on_plug_in_callback_query_handler(event):
     o = await all_pro_s(Config, client1, client2, client3)
-    if not event.query.user_id in o:
+    if event.query.user_id not in o:
         sedok = "Who The Fuck Are You? Get Your Own Friday."
         await event.answer(sedok, cache_time=0, alert=True)
         return
@@ -312,7 +310,7 @@ async def rip(event):
     yt_dl_data = event.data_match.group(1).decode("UTF-8")
     link_s = yt_dl_data
     if event.query.user_id not in o:
-        text = f"Please Get Your Own Friday And Don't Waste My Resources"
+        text = "Please Get Your Own Friday And Don't Waste My Resources"
         await event.answer(text, alert=True)
         return
     is_it = True
@@ -324,7 +322,7 @@ async def rip(event):
     sun = event.data_match.group(1).decode("UTF-8")
     o = await all_pro_s(Config, client1, client2, client3)
     if event.query.user_id not in o:
-        text = f"Please Get Your Own Friday And Don't Waste My Resources"
+        text = "Please Get Your Own Friday And Don't Waste My Resources"
         await event.answer(text, alert=True)
         return
     ok = await _deezer_dl(sun, event, tgbot)
@@ -337,7 +335,7 @@ async def rip(event):
     o = await all_pro_s(Config, client1, client2, client3)
     link_s = yt_dl_data
     if event.query.user_id not in o:
-        text = f"Please Get Your Own Friday And Don't Waste My Resources"
+        text = "Please Get Your Own Friday And Don't Waste My Resources"
         await event.answer(text, alert=True)
         return
     is_it = False
@@ -421,10 +419,7 @@ async def rip(event):
 def paginate_help(page_number, loaded_modules, prefix):
     number_of_rows = 8
     number_of_cols = 2
-    helpable_modules = []
-    for p in loaded_modules:
-        if not p.startswith("_"):
-            helpable_modules.append(p)
+    helpable_modules = [p for p in loaded_modules if not p.startswith("_")]
     helpable_modules = sorted(helpable_modules)
     modules = [
         custom.Button.inline(
@@ -461,8 +456,9 @@ async def inline_id_handler(event: events.InlineQuery.Event):
     if event.query.user_id not in o:
         resultm = builder.article(
             title="Not Allowded",
-            text=f"You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
+            text="You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
         )
+
         await event.answer([resultm])
         return
     testinput = event.pattern_match.group(1)
@@ -516,8 +512,9 @@ async def inline_id_handler(event: events.InlineQuery.Event):
     if event.query.user_id not in o:
         resultm = builder.article(
             title="Not Allowded",
-            text=f"You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
+            text="You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
         )
+
         await event.answer([resultm])
         return
     testinput = event.pattern_match.group(1)
@@ -562,8 +559,9 @@ async def inline_id_handler(event: events.InlineQuery.Event):
     if event.query.user_id not in o:
         resultm = builder.article(
             title="- Not Allowded -",
-            text=f"You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
+            text="You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
         )
+
         await event.answer([resultm])
         return
     results = []
@@ -575,7 +573,7 @@ async def inline_id_handler(event: events.InlineQuery.Event):
         match = match.replace("page=" + page[0], "")
     except IndexError:
         page = 1
-    
+
     search_args = (str(match), int(page))
     gsearch = GoogleSearch()
     gresults = await gsearch.async_search(*search_args)
@@ -646,8 +644,9 @@ async def inline_id_handler(event: events.InlineQuery.Event):
     if event.query.user_id not in o:
         resultm = builder.article(
             title="- Not Allowded -",
-            text=f"You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
+            text="You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
         )
+
         await event.answer([resultm])
         return
     results = []
@@ -693,10 +692,7 @@ Year: {}""".format(
         )
         await event.answer([lul_k])
     else:
-        resultm = builder.article(
-            title="- No Results :/ -",
-            text=f"No Results Found !"
-        )
+        resultm = builder.article(title="- No Results :/ -", text='No Results Found !')
         await event.answer([resultm])
         
 @tgbot.on(events.InlineQuery(pattern=r"deezer ?(.*)"))
@@ -706,8 +702,9 @@ async def inline_id_handler(event):
     if event.query.user_id not in o:
         resultm = builder.article(
             title="- Not Allowded -",
-            text=f"You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
+            text="You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
         )
+
         await event.answer([resultm])
         return
     results = []
@@ -742,8 +739,9 @@ async def anime(event):
     if event.query.user_id not in o:
         resultm = builder.article(
             title="- Not Allowded -",
-            text=f"You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
+            text="You Can't Use This Bot. \nDeploy Friday To Get Your Own Assistant, Repo Link [Here](https://github.com/StarkGang/FridayUserbot)",
         )
+
         await event.answer([resultm])
         return
     results = []

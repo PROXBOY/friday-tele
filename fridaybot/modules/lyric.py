@@ -59,9 +59,7 @@ async def _(event):
 async def lyrics(lyric):
     if lyric.fwd_from:
         return
-    if r"-" in lyric.text:
-        pass
-    else:
+    if r"-" not in lyric.text:
         await lyric.edit(
             "`Error: please use '-' as divider for <artist> and <song>`\n"
             "eg: `.glyrics Nicki Minaj - Super Bass`"

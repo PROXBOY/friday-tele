@@ -31,5 +31,3 @@ async def ok(event):
                 )
             except:
                 pass
-        else:
-            pass
