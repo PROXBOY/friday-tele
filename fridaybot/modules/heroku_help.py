@@ -181,11 +181,11 @@ async def variable(var):
                 var, "`Please specify ConfigConfigs you want to delete`"
             )
         await asyncio.sleep(1.5)
-        if variable in heroku_var:
-            await friday.edit_or_reply(var, f"**{variable}**  `successfully deleted`")
-            del heroku_var[variable]
-        else:
+        if variable not in heroku_var:
             return await friday.edit_or_reply(var, f"**{variable}**  `is not exists`")
+
+        await friday.edit_or_reply(var, f"**{variable}**  `successfully deleted`")
+        del heroku_var[variable]
 
 
 @friday.on(friday_on_cmd(pattern="shp ?(.*)"))

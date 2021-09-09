@@ -100,12 +100,10 @@ async def get_other_plugins(Config, client_s, fridaydevs):
     except:
         fridaydevs.info("Failed To Other Modules :(")
         return
+    pathh = "fridaybot/modules/"
     for meisnub in a_plugins:
         hmm = meisnub.media.document.attributes[-1].file_name
-        pathh = "fridaybot/modules/"
-        if os.path.exists(os.path.join(pathh, hmm)):
-            pass
-        else:
+        if not os.path.exists(os.path.join(pathh, hmm)):
             await client_s.download_media(meisnub.media, "fridaybot/modules/")
     fridaydevs.info("Extra Plugins Downloaded.")
 
@@ -125,7 +123,7 @@ else:
 
 if Config.LOAD_OTHER_PLUGINS:
         bot.loop.run_until_complete(get_other_plugins(Config, bot, fridaydevs))
-        
+
 import glob
 
 path = "fridaybot/modules/*.py"
@@ -136,12 +134,17 @@ for name in files:
         path1 = Path(f.name)
         shortname = path1.stem
         try:
-            load_module(shortname.replace(".py", ""))    
+            load_module(shortname.replace(".py", ""))
         except Exception as e:
             failed_warner += 1
             fridaydevs.info("------------------------")
-            fridaydevs.info("Failed To Load : " + str(shortname.replace(".py", "")) + f" Error : {str(e)}")
-            fridaydevs.info("------------------------")   
+            fridaydevs.info(
+                "Failed To Load : "
+                + str(shortname.replace(".py", ""))
+                + f' Error : {e}'
+            )
+
+            fridaydevs.info("------------------------")
         if failed2 is None:
             try:
                 load_module_dclient(shortname.replace(".py", ""), client2)
@@ -170,13 +173,13 @@ if failed2 is None:
     total_clients += 1
 if failed3 is None:
     total_clients += 1
-    
+
 if wsta[0].lower() != Lol[0]:
    sys.exit("Bug Detected ! // UserBot is Exiting.")
 
 TZ = pytz.timezone(Config.TZ)
 datetime_tz = datetime.now(TZ)
-strk = datetime_tz.strftime(f"Date : %d/%m/%Y \nTime : %H:%M")
+strk = datetime_tz.strftime('Date : %d/%m/%Y \nTime : %H:%M')
 sarg = (f"""{wsta}
 -------------------------------------------
 Friday-Userbot Based On Telethon V{tv}

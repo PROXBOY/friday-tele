@@ -14,33 +14,32 @@ async def _(event):
     input_str = event.pattern_match.group(1)
 
     def main(emotion):
-        if emotion == "Sad":
-            urlhere = "http://www.imdb.com/search/title?genres=drama&title_type=feature&sort=moviemeter, asc"
-
-        elif emotion == "Anticipation":
+        if emotion == "Anticipation":
             urlhere = "https://www.imdb.com/search/title/?genres=sci-fi"
 
-        elif emotion == "Fear":
-            urlhere = "http://www.imdb.com/search/title?genres=sport&title_type=feature&sort=moviemeter, asc"
+        elif emotion == "Comedy":
+            urlhere = "https://www.imdb.com/search/title/?genres=comedy"
 
         elif emotion == "Enjoyment":
             urlhere = "http://www.imdb.com/search/title?genres=thriller&title_type=feature&sort=moviemeter, asc"
 
-        elif emotion == "Trust":
-            urlhere = "http://www.imdb.com/search/title?genres=western&title_type=feature&sort=moviemeter, asc"
+        elif emotion == "Fear":
+            urlhere = "http://www.imdb.com/search/title?genres=sport&title_type=feature&sort=moviemeter, asc"
 
         elif emotion == "Romantic":
             urlhere = "https://www.imdb.com/search/title/?genres=romance"
 
-        elif emotion == "Comedy":
-            urlhere = "https://www.imdb.com/search/title/?genres=comedy"
+        elif emotion == "Sad":
+            urlhere = "http://www.imdb.com/search/title?genres=drama&title_type=feature&sort=moviemeter, asc"
+
+        elif emotion == "Trust":
+            urlhere = "http://www.imdb.com/search/title?genres=western&title_type=feature&sort=moviemeter, asc"
 
         response = HTTP.get(urlhere)
 
         data = response.text
         soup = SOUP(data, "lxml")
-        title = soup.find_all("a", attrs={"href": re.compile(r"\/title\/tt+\d*\/")})
-        return title
+        return soup.find_all("a", attrs={"href": re.compile(r"\/title\/tt+\d*\/")})
 
     emotion = input_str
     a = main(emotion)

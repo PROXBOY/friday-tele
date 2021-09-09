@@ -129,7 +129,7 @@ async def hmm(event):
     if event.fwd_from:
         return
     life = Config.DEEP_API_KEY
-    if life == None:
+    if life is None:
         life = "quickstart-QUdJIGlzIGNvbWluZy4uLi4K"
         await event.edit("No Api Key Found, Please Add it. For Now Using Local Key")
     if not event.reply_to_msg_id:
@@ -208,15 +208,15 @@ async def _(event):
 async def _(event):
     if event.fwd_from:
         return
-    
+
     url = "https://thispersondoesnotexist.com/image"
     response = requests.get(url)
     poppy = await friday.edit_or_reply(event, "Creating a fake face for you... 🌚")
     if response.status_code == 200:
       with open("FRIDAYOT.jpg", 'wb') as f:
         f.write(response.content)
-    
-    captin = f"Fake Image By Friday.\nGet Your Own Friday From @FRIDAYCHAT."
+
+    captin = 'Fake Image By Friday.\nGet Your Own Friday From @FRIDAYCHAT.'
     fole = "FRIDAYOT.jpg"
     await borg.send_file(event.chat_id, fole, caption=captin)
     await poppy.delete()
@@ -390,17 +390,14 @@ async def lolmetrg(event):
     hmm_s = await event.client(GetFullUserRequest(sed.sender_id))
     if not hmm_s.profile_photo:
         imglink = 'https://telegra.ph/file/b9684cda357dfbe6f5748.jpg'
-    elif hmm_s.profile_photo:
+    else:
         img = await borg.download_media(hmm_s.profile_photo, sedpath)
         url_s = upload_file(img)
         imglink = f"https://telegra.ph{url_s[0]}"
     first_name = html.escape(hmm_s.user.first_name)
     if first_name is not None:
         first_name = first_name.replace("\u2060", "")
-    if sed.text is None:
-        comment = 'Give Some Text'
-    else:
-        comment = sed.raw_text
+    comment = 'Give Some Text' if sed.text is None else sed.raw_text
     lolul = f"https://some-random-api.ml/canvas/youtube-comment?avatar={imglink}&username={first_name}&comment={comment}"
     r = requests.get(lolul)
     open("ytc.png", "wb").write(r.content)
@@ -513,14 +510,13 @@ async def lottiepie(event):
     message = await event.get_reply_message()
     if message.media and message.media.document:
         mime_type = message.media.document.mime_type
-        if not "tgsticker" in mime_type:
+        if "tgsticker" not in mime_type:
             await event.edit("Not Supported Yet.")
             return
         await message.download_media("tgs.tgs")
         await runcmd("lottie_convert.py tgs.tgs json.json")
-        json = open("json.json", "r")
-        jsn = json.read()
-        json.close()
+        with open("json.json", "r") as json:
+            jsn = json.read()
         jsn = (
             jsn.replace("[1]", "[2]")
             .replace("[2]", "[3]")
@@ -530,7 +526,7 @@ async def lottiepie(event):
         )
         open("json.json", "w").write(jsn)
         await event.delete()
-        await friday.run_cmd(f"lottie_convert.py json.json tgs.tgs")
+        await friday.run_cmd('lottie_convert.py json.json tgs.tgs')
         await borg.send_file(event.chat_id, file="tgs.tgs", force_document=False)
         os.remove("json.json")
         os.remove("tgs.tgs")
@@ -589,15 +585,12 @@ async def spinshit(message):
     if int(lolshit) > 6:
         await message.edit("`Only Speed from 1-6 Is Allowded !`")
         return
-    keke = str(lolshit)
     if not reply:
         await message.edit("`Reply To Media First !`")
         return
     else:
-        if lolshit:
-            step = lmaodict.get(keke)
-        else:
-            step = 1
+        keke = str(lolshit)
+        step = lmaodict.get(keke) if lolshit else 1
     pic_loc = await convert_to_image(message, borg)
     if not pic_loc:
         await message.edit("`Reply to a valid media first.`")
@@ -684,7 +677,7 @@ async def holastark2(event):
     d1.text((1433, 1345), text, font=myFont, fill=(51, 51, 51))
     TZ = pytz.timezone(Config.TZ)
     datetime_tz = datetime.now(TZ)
-    oof = datetime_tz.strftime(f"%Y/%m/%d")
+    oof = datetime_tz.strftime('%Y/%m/%d')
     d1.text((961, 2185), oof, font=myFont2, fill=(51, 51, 51))
     d1.text((2441, 2113), random.choice(famous_people), font=myFont3, fill=(51, 51, 51))
     file_name = "certificate.png"
@@ -1081,7 +1074,7 @@ async def convert_to_note(event):
         return
     await event.edit("Ah, Shit. Here it Starts.")
     kk = await event.get_reply_message()
-    if not (kk.video or kk.video_note or kk.gif or kk.video_note):
+    if not kk.video and not kk.video_note and not kk.gif:
         await event.edit("`Oho, Reply To Video Only.`")
         return
     hmm = await event.client.download_media(kk.media)
@@ -1123,7 +1116,7 @@ async def starkmeme(event):
     if event.fwd_from:
         return
     hmm = event.pattern_match.group(1)
-    if hmm == None:
+    if hmm is None:
         await event.edit("Give Some Text")
         return
     if not event.reply_to_msg_id:
@@ -1132,27 +1125,22 @@ async def starkmeme(event):
     mryeast = await event.edit("Making Memes Until Praise MrBeast.")
     await event.get_reply_message()
     seds = await convert_to_image(event, borg)
+    imgpath = sedpath + "/" + "memeimg.webp"
     if ";" in hmm:
         stark = hmm.split(";", 1)
         first_txt = stark[0]
         second_txt = stark[1]
         top_text = first_txt
         bottom_text = second_txt
-        generate_meme(seds, top_text=top_text, bottom_text=bottom_text)
-        imgpath = sedpath + "/" + "memeimg.webp"
-        await borg.send_file(event.chat_id, imgpath)
-        if os.path.exists(imgpath):
-            os.remove(imgpath)
-        await mryeast.delete()
     else:
         top_text = hmm
         bottom_text = ""
-        generate_meme(seds, top_text=top_text, bottom_text=bottom_text)
-        imgpath = sedpath + "/" + "memeimg.webp"
-        await borg.send_file(event.chat_id, imgpath)
-        if os.path.exists(imgpath):
-            os.remove(imgpath)
-        await mryeast.delete()
+
+    generate_meme(seds, top_text=top_text, bottom_text=bottom_text)
+    await borg.send_file(event.chat_id, imgpath)
+    if os.path.exists(imgpath):
+        os.remove(imgpath)
+    await mryeast.delete()
 
 
 def generate_meme(
@@ -1204,7 +1192,7 @@ async def glitch(event):
     sed = await event.get_reply_message()
     okbruh = await event.edit("`Gli, Glitchiiingggg.....`")
     photolove = await convert_to_image(event, friday)
-    pathsn = f"./starkgangz/@fridayot.gif"
+    pathsn = './starkgangz/@fridayot.gif'
     await event.edit("Glitching Image :/")
     glitch_imgs = glitcher.glitch_image(photolove, 2, gif=True, color_offset=True)
     glitch_imgs[0].save(

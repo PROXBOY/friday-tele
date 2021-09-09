@@ -83,35 +83,7 @@ async def _(event):
                     try:
                         tts = gTTS(answer, tld="com", lang="en")
                         tts.save("results.mp3")
-                    except AssertionError:
-                        return
-                    except ValueError:
-                        return
-                    except RuntimeError:
-                        return
-                    except gTTSError:
-                        return
-                    with open("results.mp3", "r"):
-                        await borg.send_file(
-                            event.chat_id,
-                            "results.mp3",
-                            voice_note=True,
-                            reply_to=event.id,
-                        )
-                    os.remove("results.mp3")
-                    os.remove(required_file_name)
-                elif (
-                    transcript_response == "Wolfram Alpha did not understand your input"
-                ):
-                    try:
-                        answer = "Sorry, Friday's AI system can't understand you.."
-                        tts = gTTS(answer, tld="com", lang="en")
-                        tts.save("results.mp3")
-                    except AssertionError:
-                        return
-                    except ValueError:
-                        return
-                    except RuntimeError:
+                    except (AssertionError, ValueError, RuntimeError):
                         return
                     except gTTSError:
                         return

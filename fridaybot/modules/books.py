@@ -27,7 +27,6 @@ async def _(event):
     if event.fwd_from:
         return
     input_str = event.pattern_match.group(1)
-    lool = 0
     KkK = await friday.edit_or_reply(event, "searching for the book...")
     lin = "https://b-ok.cc/s/"
     text = input_str
@@ -44,11 +43,12 @@ async def _(event):
         await friday.edit_or_reply(event, "No Books Found with that name.")
     else:
 
+        lool = 0
         for tr in soup.find_all('td'):
             for td in tr.find_all('h3'):
                 for ts in td.find_all('a'):
                     title = ts.get_text()
-                    lool = lool+1
+                    lool += 1
                 for ts in td.find_all('a', attrs={'href': re.compile("^/book/")}):
                     ref = (ts.get('href'))
                     link = "https://b-ok.cc" + ref
@@ -59,8 +59,13 @@ async def _(event):
         f.write("By Friday.")
         f.close()
         caption="By Friday.\n Get Your Friday From @FRIDAYCHAT"
-        
-        await borg.send_file(event.chat_id, "book.txt", caption=f"**BOOKS GATHERED SUCCESSFULLY!\n\nBY FRIDAY. GET YOUR OWN FRIDAY FROM @FRIDAYCHAT.**")
+
+        await borg.send_file(
+            event.chat_id,
+            "book.txt",
+            caption='**BOOKS GATHERED SUCCESSFULLY!\n\nBY FRIDAY. GET YOUR OWN FRIDAY FROM @FRIDAYCHAT.**',
+        )
+
         os.remove("book.txt")
         await KkK.delete()
         

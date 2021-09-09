@@ -284,14 +284,12 @@ async def checker(e):
         url = "http://fota-cloud-dn.ospserver.net/firmware/"
         urlEnd = "/" + modelnum[9:] + "/version.test.xml"
         print(urlEnd)
-        urlLinks = []
         try:
             outandroid = int(outandroid)
             temp = outandroid
         except ValueError:
             return
-        for i in csclist:
-            urlLinks.append(url + i + urlEnd)
+        urlLinks = [url + i + urlEnd for i in csclist]
         for i in urlLinks:
             r = requests.get(i)
             xmlResp = bs(r.text, "lxml")
@@ -303,7 +301,7 @@ async def checker(e):
                 print(region)
                 # out_msg.append("Region: "+region)
                 # out_msg.append("\nlatestVersion: "+latestVersion[:16])
-                if outandroid != 0 and flagship != True:
+                if outandroid != 0 and not flagship:
                     data.append(
                         "<br/>"
                         + "<b>Model</b> : "
@@ -318,28 +316,21 @@ async def checker(e):
                     )
                     if latestVersion[9] == "C" or latestVersion[10] == "C":
                         if outandroid == 7:
-                            piecount = piecount + 1
-                        outandroid = outandroid + 2
-                        data.append(
-                            "<b>Android Version</b> : " + str(outandroid) + "<br/>"
-                        )
-                        # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
+                            piecount += 1
+                        outandroid += 2
+                                            # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
                     elif latestVersion[9] == "B" or latestVersion[10] == "B":
                         if outandroid == 8:
-                            piecount = piecount + 1
-                        outandroid = outandroid + 1
-                        data.append(
-                            "<b>Android Version</b> : " + str(outandroid) + "<br/>"
-                        )
-                        # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid+1),piecount))
-                    else:
-                        if outandroid == 9:
-                            piecount = piecount + 1
-                        data.append(
-                            "<b>Android Version</b> : " + str(outandroid) + "<br/>"
-                        )
-                    # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
-                    # print("\nAndroid Version : " + str(outandroid)+"\n")
+                            piecount += 1
+                        outandroid += 1
+                                            # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid+1),piecount))
+                    elif outandroid == 9:
+                        piecount += 1
+                    data.append(
+                        "<b>Android Version</b> : " + str(outandroid) + "<br/>"
+                    )
+                                    # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
+                                    # print("\nAndroid Version : " + str(outandroid)+"\n")
                 # bot.reply_to(message,'Region : {}\nLatest Version : {}'.format(region,latestVersion[:16]))
                 data.append("--------------------------------------------------")
             except IndexError:
@@ -389,14 +380,12 @@ async def checker(e):
         url = "http://fota-cloud-dn.ospserver.net/firmware/"
         urlEnd = "/" + modelnum[9:] + "/version.xml"
         print(urlEnd)
-        urlLinks = []
         try:
             outandroid = int(outandroid)
             temp = outandroid
         except ValueError:
             return
-        for i in csclist:
-            urlLinks.append(url + i + urlEnd)
+        urlLinks = [url + i + urlEnd for i in csclist]
         for i in urlLinks:
             r = requests.get(i)
             xmlResp = bs(r.text, "lxml")
@@ -408,7 +397,7 @@ async def checker(e):
                 print(region)
                 # out_msg.append("Region: "+region)
                 # out_msg.append("\nlatestVersion: "+latestVersion[:16])
-                if outandroid != 0 and flagship != True:
+                if outandroid != 0 and not flagship:
                     data.append(
                         "<br/>"
                         + "<b>Model</b> : "
@@ -423,28 +412,21 @@ async def checker(e):
                     )
                     if latestVersion[9] == "C" or latestVersion[10] == "C":
                         if outandroid == 7:
-                            piecount = piecount + 1
-                        outandroid = outandroid + 2
-                        data.append(
-                            "<b>Android Version</b> : " + str(outandroid) + "<br/>"
-                        )
-                        # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
+                            piecount += 1
+                        outandroid += 2
+                                            # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
                     elif latestVersion[9] == "B" or latestVersion[10] == "B":
                         if outandroid == 8:
-                            piecount = piecount + 1
-                        outandroid = outandroid + 1
-                        data.append(
-                            "<b>Android Version</b> : " + str(outandroid) + "<br/>"
-                        )
-                        # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid+1),piecount))
-                    else:
-                        if outandroid == 9:
-                            piecount = piecount + 1
-                        data.append(
-                            "<b>Android Version</b> : " + str(outandroid) + "<br/>"
-                        )
-                    # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
-                    # print("\nAndroid Version : " + str(outandroid)+"\n")
+                            piecount += 1
+                        outandroid += 1
+                                            # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid+1),piecount))
+                    elif outandroid == 9:
+                        piecount += 1
+                    data.append(
+                        "<b>Android Version</b> : " + str(outandroid) + "<br/>"
+                    )
+                                    # bot.reply_to(message,'Region : {}\nLatest Version : {}\nAndroid Version : {}\nNumber of Pie Testing Regions : {}'.format(region,latestVersion[:16],str(outandroid),piecount))
+                                    # print("\nAndroid Version : " + str(outandroid)+"\n")
                 # bot.reply_to(message,'Region : {}\nLatest Version : {}'.format(region,latestVersion[:16]))
                 data.append("--------------------------------------------------")
             except IndexError:

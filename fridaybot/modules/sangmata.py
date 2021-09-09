@@ -68,7 +68,7 @@ async def _(event):
     chat = "@fakemailbot"
     reply_message.sender
     await event.edit("```Processing```")
-    link = f"/generate"
+    link = '/generate'
     async with borg.conversation(chat) as conv:
         try:
             response = conv.wait_event(

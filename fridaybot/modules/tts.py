@@ -40,11 +40,8 @@ async def _(event):
     if not reply_msg.text:
         await event.edit("`Please Reply To Text Message To Convert To Speech !`")
         return
-    if input_str:
-        language = input_str
-    else:
-        language = "en"
-    text = reply_msg.raw_text   
+    language = input_str or "en"
+    text = reply_msg.raw_text
     kk = gtts.lang.tts_langs()
     if not kk.get(language):
         await event.edit("`Unsupported Language!`")

@@ -75,13 +75,7 @@ async def _(event):
     fullName = str(bio.get("fullName"))
     ego = str(bio.get("alterEgos"))
     aliase = bio.get("aliases")
-    sedo = ""
-    #Messi Is The Best.
-    for messi in aliase:
-	    sedo += messi + "   "
-	    
-	  
-
+    sedo = "".join(messi + "   " for messi in aliase)
     PoB = str(bio.get("placeOfBirth"))
     sed = str(sedo)
 
@@ -90,7 +84,7 @@ async def _(event):
     alignment = str(bio.get("alignment"))
 
     imoge = a.get("images")
-    res = list(imoge.keys())[3] 
+    res = list(imoge.keys())[3]
     linke = str(res)
     link = str(imoge.get(linke))
     fcb = input_str.upper()

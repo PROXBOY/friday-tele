@@ -32,7 +32,7 @@ async def _(event):
     yeslol = 0
     await event.edit("`Processing..`")
     lol_s = event.pattern_match.group(1)
-    if lol_s == None:
+    if lol_s is None:
         await event.edit("`Give FeD ID`")
         return
     elif lol_s == " ":
@@ -62,7 +62,7 @@ async def _(event):
     lol_s = event.pattern_match.group(1)
     await event.edit("`Processing..`")
     lol = get_all_feds()
-    if lol_s == None:
+    if lol_s is None:
         await event.edit("`Give FeD ID`")
         return
     elif lol_s == " ":
@@ -84,7 +84,7 @@ async def _(event):
     if event.fwd_from:
         return
     lol_s = event.text.split(" ", maxsplit=1)[1]
-    if lol_s == None:
+    if lol_s is None:
         await event.edit("`No user Found To Fban.`")
         return
     all_fed = get_all_feds()
@@ -120,7 +120,7 @@ async def _(event):
     if event.fwd_from:
         return
     lol_s = event.pattern_match.group(1)
-    if lol_s == None:
+    if lol_s is None:
         await event.edit("`No User Found To Fban.`")
         return
     all_fed = get_all_feds()

@@ -13,8 +13,10 @@ from pylast import LastFMNetwork, md5
 
 if os.path.exists('local.env'):
     load_dotenv('local.env')
-    
-class Config(object):
+
+
+
+class Config((object)):
     LOGGER = True
     APP_ID = int(os.environ.get("APP_ID", 6))
     LANG = os.environ.get("LANG", "en")
@@ -106,7 +108,7 @@ class Config(object):
     NEWS_CHANNEL_ID = int(os.environ.get("NEWS_CHANNEL_ID", -100))
     SPAMWATCH_API = os.environ.get("SPAMWATCH_API", None)
     ANTISPAM_SYSTEM = os.environ.get("ANTISPAM_SYSTEM", "DISABLE")
-    WHITE_CHAT = set(int(x) for x in os.environ.get("WHITE_CHAT", "").split())
+    WHITE_CHAT = {int(x) for x in os.environ.get("WHITE_CHAT", "").split()}
     # Get this value from my.telegram.org! Please do not steal
     LOCATION = os.environ.get("LOCATION", None)
     ALIVE_TEXT = os.environ.get("ALIVE_TEXT", None)
@@ -157,9 +159,10 @@ class Config(object):
     # TG API limit. A message can have maximum 4096 characters!
     MAX_MESSAGE_SIZE_LIMIT = 4095
     # set blacklist_chats where you do not want fridaybot's features
-    UB_BLACK_LIST_CHAT = set(
+    UB_BLACK_LIST_CHAT = {
         int(x) for x in os.environ.get("UB_BLACK_LIST_CHAT", "").split()
-    )
+    }
+
     # maximum number of messages for antiflood
     MAX_ANTI_FLOOD_MESSAGES = 10
     # warn mode for anti flood
@@ -202,15 +205,16 @@ class Config(object):
     # specify list of users allowed to use bot
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
-    SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
-    WHITELIST_USERS = set(
+    SUDO_USERS = {int(x) for x in os.environ.get("SUDO_USERS", "").split()}
+    WHITELIST_USERS = {
         int(x) for x in os.environ.get("WHITELIST_USERS", "").split()
-    )
+    }
+
     BLACKLIST_USERS = set(
         int(x) for x in os.environ.get("BLACKLIST_USERS", "").split()
     )
-    DEVLOPERS = set(int(x) for x in os.environ.get("DEVLOPERS", "").split())
-    OWNER_ID = set(int(x) for x in os.environ.get("OWNER_ID", "").split())
+    DEVLOPERS = {int(x) for x in os.environ.get("DEVLOPERS", "").split()}
+    OWNER_ID = {int(x) for x in os.environ.get("OWNER_ID", "").split()}
     SUPPORT_USERS = set(int(x) for x in os.environ.get("SUPPORT_USERS", "").split())
     # Very Stream
     VERY_STREAM_LOGIN = os.environ.get("VERY_STREAM_LOGIN", None)

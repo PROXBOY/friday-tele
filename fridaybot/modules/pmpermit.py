@@ -83,9 +83,11 @@ if PM_ON_OFF != "DISABLE":
             return
         if PM_ON_OFF == "DISABLE":
             return
-        if not pmpermit_sql.is_approved(event.chat_id):
-            if not event.chat_id in PM_WARNS:
-                pmpermit_sql.approve(event.chat_id, "outgoing")
+        if (
+            not pmpermit_sql.is_approved(event.chat_id)
+            and event.chat_id not in PM_WARNS
+        ):
+            pmpermit_sql.approve(event.chat_id, "outgoing")
                 
     @borg.on(friday_on_cmd(pattern="(a|approve|allow)$"))
     async def approve(event):
@@ -226,25 +228,24 @@ if PM_ON_OFF != "DISABLE":
             await do_pm_permit_action(chat_ids, event)
                                        
     async def do_pm_permit_action(chat_ids, event):
-        if Config.NSFW_FILTER_PM:
-            if event.media:
-                hehe = await is_nsfw(event)
-                if hehe is True:
-                    await event.client.send_message(chat_ids, "`How Dare You Send Nsfw In My Masters Pm, You Have Been Blocked By FridayUserBot !`")
-                    await event.client(functions.contacts.BlockRequest(chat_ids))
-                    _message = ""
-                    _message += "#BLOCKED_PM_NSFW\n\n"
-                    _message += f"[User](tg://user?id={chat_ids}): {chat_ids}\n"
-                    _message += f"**This Asshole Sent Nsfw Contect in Your Pm**"
-                    try:
-                        await event.client.send_message(
-                            entity=Config.PRIVATE_GROUP_ID,
-                            message=_message,
-                            link_preview=False,
-                            silent=True,
-                        )   
-                    except BaseException:
-                        pass
+        if Config.NSFW_FILTER_PM and event.media:
+            hehe = await is_nsfw(event)
+            if hehe is True:
+                await event.client.send_message(chat_ids, "`How Dare You Send Nsfw In My Masters Pm, You Have Been Blocked By FridayUserBot !`")
+                await event.client(functions.contacts.BlockRequest(chat_ids))
+                _message = ""
+                _message += "#BLOCKED_PM_NSFW\n\n"
+                _message += f"[User](tg://user?id={chat_ids}): {chat_ids}\n"
+                _message += '**This Asshole Sent Nsfw Contect in Your Pm**'
+                try:
+                    await event.client.send_message(
+                        entity=Config.PRIVATE_GROUP_ID,
+                        message=_message,
+                        link_preview=False,
+                        silent=True,
+                    )   
+                except BaseException:
+                    pass
         if chat_ids not in PM_WARNS:
             PM_WARNS.update({chat_ids: 0})
         if PM_WARNS[chat_ids] == 3:

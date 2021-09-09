@@ -16,7 +16,7 @@ async def _(event):
     if event.fwd_from:
         return
     animation_interval = 2
-    animation_ttl = range(0, 11)
+    animation_ttl = range(11)
     await event.edit("Starting Servers")
     animation_chars = [
                 "`Connecting To T-800 At 149.154.167.51 - IPV4 - TELEGRAM // DC-2`",
